@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "60081339463",
+    "firebase_url": "https://alkorea-a3a97.firebaseio.com",
+    "project_id": "alkorea-a3a97",
+    "storage_bucket": "alkorea-a3a97.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60081339463:android:e69b10410ffe1c69",
+        "android_client_info": {
+          "package_name": "com.innovator.alkorea"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "60081339463-e9v77ii306psq0mfbnvg4o6qtsftkq90.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCz4Bh5hVN-XQKgNYmLTgM1gB5qq0kYVMY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
