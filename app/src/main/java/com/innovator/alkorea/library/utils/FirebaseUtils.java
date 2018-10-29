@@ -24,7 +24,7 @@ public class FirebaseUtils {
 
   private static String TAG = FirebaseUtils.class.getName();
   private static final String baseKey = "room";
-  private static final String playerKey = "players";
+  private static final String playerKey = "playerList";
   private static final String gameKey = "game";
   private static final String playerStateKey = "playerState";
   private static final String playerScore = "playerScore";

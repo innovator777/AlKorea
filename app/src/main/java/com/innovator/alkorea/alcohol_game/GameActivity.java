@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.innovator.alkorea.GameManager;
 import com.innovator.alkorea.library.models.Player;
 import com.innovator.alkorea.library.models.Room;
 import com.innovator.alkorea.library.utils.AlKoreaTimer;
@@ -17,7 +18,7 @@ import com.innovator.alkorea.library.views.GameReadyView;
 import java.util.TimerTask;
 
 //Create innovator(JongChan Yang)
-abstract public class GameActivity extends Activity {
+abstract public class GameActivity extends Activity implements GameManager.GameEventListener {
 
   private final String TAG = GameActivity.class.getName();
 
@@ -29,6 +30,7 @@ abstract public class GameActivity extends Activity {
   protected GameReadyView gameReadyView;
 
   protected AlKoreaTimer readyTimer;
+  protected GameManager gameManager;
 
   // millisecond 단위
   protected int gamePlayTime = 10000;
@@ -73,6 +75,19 @@ abstract public class GameActivity extends Activity {
       }
     }, 4000, 0, 1000);
     readyTimer.setCallbackListener(alKoreaTimerCallbackListener);
+  }
+
+  @Override
+  protected void onStart() {
+    super.onStart();
+    gameManager = new GameManager(getBaseContext(), GameActivity.this);
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    if (gameManager != null)
+      gameManager.removeDatabaseReferenceEventListener();
   }
 
   protected void updateTargetPlayerState(Room.STATE state) {

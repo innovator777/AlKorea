@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TestPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-  private List<Player> players;
+  private List<Player> playerList;
 
   @Override
   public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -22,7 +22,7 @@ public class TestPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
   @Override
   public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-    Player player = players.get(position);
+    Player player = playerList.get(position);
     TestPlayerViewHolder testPlayerViewHolder = (TestPlayerViewHolder)holder;
     testPlayerViewHolder.getNumberTextView().setText("" + player.getNumber());
     testPlayerViewHolder.getNameTextView().setText(player.getName());
@@ -31,14 +31,14 @@ public class TestPlayerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
   @Override
   public int getItemCount() {
-    if (players != null && !players.isEmpty())
-      return players.size();
+    if (playerList != null && !playerList.isEmpty())
+      return playerList.size();
     else
       return 0;
   }
 
-  public void setPlayers(List<Player> players) {
-    this.players = players;
+  public void setPlayerList(List<Player> playerList) {
+    this.playerList = playerList;
     notifyDataSetChanged();
   }
 }

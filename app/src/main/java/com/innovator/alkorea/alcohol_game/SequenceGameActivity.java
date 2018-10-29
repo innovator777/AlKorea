@@ -10,6 +10,7 @@ import com.innovator.alkorea.library.utils.AlKoreaTimer;
 import com.innovator.alkorea.library.utils.AlKoreaTimerCallbackListener;
 import com.innovator.alkorea.library.utils.OtherUtils;
 
+import java.util.HashMap;
 import java.util.TimerTask;
 
 //Create innovator(JongChan Yang)
@@ -74,6 +75,16 @@ public class SequenceGameActivity extends GameActivity implements AlKoreaTimerCa
       }
     });
     updateTargetPlayerScore();
-//    finish();
+    updateTargetPlayerState(Room.STATE.FINISH);
+  }
+
+  @Override
+  public void showGameResult(HashMap<String, Integer> result) {
+
+  }
+
+  @Override
+  public void endGame() {
+    finish();
   }
 }

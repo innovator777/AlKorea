@@ -5,8 +5,6 @@ import android.os.Parcelable;
 
 import java.util.HashMap;
 
-import javax.xml.parsers.SAXParser;
-
 public class Room implements Parcelable {
 
   public enum STATE {
@@ -19,9 +17,9 @@ public class Room implements Parcelable {
 
   private String masterUID;
   private GAME game;
-  private HashMap<String, Player> players;
+  private HashMap<String, Player> playerList;
   private HashMap<String, STATE> playerState;
-  private HashMap<String, Integer> score;
+  private HashMap<String, Integer> playerScore;
 
   public Room() {
 
@@ -36,37 +34,37 @@ public class Room implements Parcelable {
     this.game = game;
   }
 
-  public Room(String masterUID, HashMap<String, Player> players) {
+  public Room(String masterUID, HashMap<String, Player> playerList) {
     this.masterUID = masterUID;
-    this.players = players;
+    this.playerList = playerList;
   }
 
-  public Room(String masterUID, GAME game, HashMap<String, Player> players) {
+  public Room(String masterUID, GAME game, HashMap<String, Player> playerList) {
     this.masterUID = masterUID;
     this.game = game;
-    this.players = players;
+    this.playerList = playerList;
   }
 
-  public Room(String masterUID, GAME game, HashMap<String, Player> players, HashMap<String, STATE> playerState) {
+  public Room(String masterUID, GAME game, HashMap<String, Player> playerList, HashMap<String, STATE> playerState) {
     this.masterUID = masterUID;
     this.game = game;
-    this.players = players;
+    this.playerList = playerList;
     this.playerState = playerState;
   }
 
-  public Room(String masterUID, GAME game, HashMap<String, Player> players, HashMap<String, STATE> playerState, HashMap<String, Integer> score) {
+  public Room(String masterUID, GAME game, HashMap<String, Player> playerList, HashMap<String, STATE> playerState, HashMap<String, Integer> playerScore) {
     this.masterUID = masterUID;
     this.game = game;
-    this.players = players;
+    this.playerList = playerList;
     this.playerState = playerState;
-    this.score = score;
+    this.playerScore = playerScore;
   }
 
   public Room(Parcel parcel) {
     this.masterUID = parcel.readString();
     int game = parcel.readInt();
     this.game = GAME.values()[game];
-    this.players = parcel.readHashMap(Player.class.getClassLoader());
+    this.playerList = parcel.readHashMap(Player.class.getClassLoader());
     this.playerState = parcel.readHashMap(STATE.class.getClassLoader());
 //    int state = parcel.readInt();
 //    this.state = STATE.values()[state];
@@ -76,9 +74,13 @@ public class Room implements Parcelable {
     HashMap<String, Object> result = new HashMap<>();
     result.put("masterUID", masterUID);
     result.put("game", game);
-    result.put("players", players);
+    result.put("playerList", playerList);
     result.put("playerState", playerState);
     return result;
+  }
+
+  public boolean isEqualsRoomBasicData(Room room) {
+    return (masterUID.equals(room.getMasterUID()) && playerList.equals(room.getPlayerList()));
   }
 
   public String getMasterUID() {
@@ -98,12 +100,12 @@ public class Room implements Parcelable {
     this.game = game;
   }
 
-  public HashMap<String, Player> getPlayers() {
-    return players;
+  public HashMap<String, Player> getPlayerList() {
+    return playerList;
   }
 
-  public void setPlayers(HashMap<String, Player> players) {
-    this.players = players;
+  public void setPlayerList(HashMap<String, Player> players) {
+    this.playerList = players;
   }
 
   public HashMap<String, STATE> getPlayerState() {
@@ -114,12 +116,12 @@ public class Room implements Parcelable {
     this.playerState = playerState;
   }
 
-  public HashMap<String, Integer> getScore() {
-    return score;
+  public HashMap<String, Integer> getPlayerScore() {
+    return playerScore;
   }
 
-  public void setScore(HashMap<String, Integer> score) {
-    this.score = score;
+  public void setPlayerScore(HashMap<String, Integer> playerScore) {
+    this.playerScore = playerScore;
   }
 
   @Override
@@ -132,7 +134,7 @@ public class Room implements Parcelable {
     parcel.writeString(masterUID);
 //    parcel.writeInt(state.ordinal());
     parcel.writeInt(game.ordinal());
-    parcel.writeMap(players);
+    parcel.writeMap(playerList);
     parcel.writeMap(playerState);
   }
 
