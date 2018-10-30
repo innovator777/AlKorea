@@ -12,6 +12,12 @@ public class Player {
 
   }
 
+  public Player(Player player){
+    this.name = player.getName();
+    this.sex = player.getSex();
+    this.number = player.getNumber();
+  }
+
   public Player(String name, int sex) {
     this.name = name;
     this.sex = sex;

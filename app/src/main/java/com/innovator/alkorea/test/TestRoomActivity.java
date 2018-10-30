@@ -173,6 +173,8 @@ public class TestRoomActivity extends Activity implements RoomManager.RoomEventL
 
   @Override
   public void exitRoom() {
+    if (roomManager != null)
+      roomManager.removeRoomManager();
     finish();
   }
 

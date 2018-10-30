@@ -53,19 +53,9 @@ public class RoomManager {
     @Override
     public void getRoomDataCallback(Room room) {
       if (room != null) {
-        if (!roomInfo.isEqualsRoomBasicData(room)) {
-          List<Player> list = new ArrayList<>();
-          for (Iterator<String> it = room.getPlayerList().keySet().iterator(); it.hasNext(); ) {
-            String key = it.next();
-            list.add(room.getPlayerList().get(key));
-            if (key.equals(room.getMasterUID())) {
-              masterName = room.getPlayerList().get(key).getName();
-            }
-          }
-          playerList = new ArrayList<>(list);
-          playerCount = playerList.size();
-          roomEventListener.updateRoomData(masterName, playerCount, playerList);
-        }
+        if (roomInfo == null || !roomInfo.isEqualsRoomBasicData(room))
+          getRoomData(room);
+
         if (!checkPlayerState(room.getPlayerState()))
           checkGame(room.getGame());
 
@@ -83,11 +73,25 @@ public class RoomManager {
     }
   };
 
+  private void getRoomData(Room room) {
+    List<Player> list = new ArrayList<>();
+    for (Iterator<String> it = room.getPlayerList().keySet().iterator(); it.hasNext(); ) {
+      String key = it.next();
+      list.add(room.getPlayerList().get(key));
+      if (key.equals(room.getMasterUID())) {
+        masterName = room.getPlayerList().get(key).getName();
+      }
+    }
+    playerList = new ArrayList<>(list);
+    playerCount = playerList.size();
+    roomEventListener.updateRoomData(masterName, playerCount, playerList);
+  }
+
   public void removeRoomManager() {
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     String roomId = OtherUtils.getSharedPreferencesStringData(context, "roomId", "");
     if(!roomId.isEmpty()) {
-      if (uid.equals(masterName)) {
+      if (uid.equals(roomInfo.getMasterUID())) {
         FirebaseUtils.removeTargetRoom(roomId);
       } else {
         FirebaseUtils.exitTargetRoom(roomId, uid);
@@ -119,7 +123,7 @@ public class RoomManager {
   private boolean checkPlayerState(HashMap<String, Room.STATE> playerState) {
     if (playerState != null) {
       String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-      return playerState.get(uid).equals(Room.STATE.GAME) || playerState.get(uid).equals(Room.STATE.FINISH);
+      return (playerState.get(uid) == Room.STATE.GAME || playerState.get(uid) == Room.STATE.FINISH);
     }
     return false;
   }

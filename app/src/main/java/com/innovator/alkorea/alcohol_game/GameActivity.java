@@ -21,6 +21,7 @@ import java.util.TimerTask;
 abstract public class GameActivity extends Activity implements GameManager.GameEventListener {
 
   private final String TAG = GameActivity.class.getName();
+  protected final int gamePlayTimeStadard = 10000;
 
   abstract protected void gameStart();
 
@@ -33,7 +34,7 @@ abstract public class GameActivity extends Activity implements GameManager.GameE
   protected GameManager gameManager;
 
   // millisecond 단위
-  protected int gamePlayTime = 10000;
+  protected int gamePlayTime = gamePlayTimeStadard;
 
   protected int score = 0;
 
@@ -104,5 +105,9 @@ abstract public class GameActivity extends Activity implements GameManager.GameE
     if(!roomId.isEmpty()) {
       FirebaseUtils.updateTargetRoomPlayerScore(roomId, uid, score);
     }
+  }
+
+  protected void setScore(int score) {
+    this.score = score;
   }
 }

@@ -6,6 +6,13 @@ import android.util.TypedValue;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 
 //Create innovator(JongChan Yang)
@@ -23,7 +30,7 @@ public class OtherUtils {
   }
 
   // 값 불러오기
-  public static SharedPreferences getPreferences(Context context){
+  public static SharedPreferences getPreferences(Context context) {
     return context.getSharedPreferences(preferenceKey, Context.MODE_PRIVATE);
   }
 
@@ -61,6 +68,31 @@ public class OtherUtils {
     SharedPreferences.Editor editor = pref.edit();
     editor.clear();
     editor.commit();
+  }
+
+  public static Map<String, Integer> sortByComparator(Map<String, Integer> unsortMap) {
+
+    List<Map.Entry<String, Integer>> list = new LinkedList<>(unsortMap.entrySet());
+
+    // Sorting the list based on values
+    Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+      @Override
+      public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+//        if (order) {
+//          return o1.getValue().compareTo(o2.getValue());
+//        } else {
+//          return o2.getValue().compareTo(o1.getValue());
+//        }
+        return o1.getValue().compareTo(o2.getValue());
+      }
+    });
+
+    // Maintaining insertion order with the help of LinkedList
+    Map<String, Integer> sortedMap = new LinkedHashMap<>();
+    for (Map.Entry<String, Integer> entry : list) {
+      sortedMap.put(entry.getKey(), entry.getValue());
+    }
+    return sortedMap;
   }
 
 }

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GameResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-  private List<Result> results;
+  private List<Result> resultList;
 
   @Override
   public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -23,24 +23,24 @@ public class GameResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
   @Override
   public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-    Result result = results.get(position);
+    Result result = resultList.get(position);
     GameResultViewHolder gameResultViewHolder = (GameResultViewHolder)holder;
     gameResultViewHolder.getRankTextView().setText(result.getRank());
-    gameResultViewHolder.getPlayerTextView().setText(result.getPlayerInfo().getNumber());
+    gameResultViewHolder.getPlayerTextView().setText(String.valueOf(result.getPlayerInfo().getNumber()));
     gameResultViewHolder.getNameTextView().setText(result.getPlayerInfo().getName());
     gameResultViewHolder.getResultTextView().setText(result.getResult());
 
   }
   @Override
   public int getItemCount() {
-    if (results != null && !results.isEmpty())
-      return results.size();
+    if (resultList != null && !resultList.isEmpty())
+      return resultList.size();
     else
       return 0;
   }
 
-  public void setResults(List<Result> results) {
-    this.results = results;
+  public void setResultList(List<Result> resultList) {
+    this.resultList = resultList;
     notifyDataSetChanged();
   }
 }

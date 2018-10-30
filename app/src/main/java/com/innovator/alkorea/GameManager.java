@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.innovator.alkorea.library.models.Player;
 import com.innovator.alkorea.library.models.Room;
 import com.innovator.alkorea.library.utils.FirebaseUtils;
 import com.innovator.alkorea.library.utils.OtherUtils;
@@ -23,7 +24,7 @@ public class GameManager {
   private GameEventListener eventListener;
 
   public interface GameEventListener {
-    void showGameResult(HashMap<String, Integer> result);
+    void showGameResult(HashMap<String, Player> playerList, HashMap<String, Integer> resultList);
     void endGame();
   }
 
@@ -48,11 +49,12 @@ public class GameManager {
         if (room.getGame() != Room.GAME.NOT) {
           for (String key : room.getPlayerState().keySet()) {
             Room.STATE state = room.getPlayerState().get(key);
+            Log.i(TAG, state.toString());
             if (state == Room.STATE.GAME) {
               return;
             }
           }
-          eventListener.showGameResult(room.getPlayerScore());
+          eventListener.showGameResult(room.getPlayerList(), room.getPlayerScore());
         }
         else {
           eventListener.endGame();

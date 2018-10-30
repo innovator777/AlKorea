@@ -4,10 +4,13 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
+import com.innovator.alkorea.library.views.GameWaitView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,13 @@ import java.util.Random;
 public class SequenceGameView extends RelativeLayout {
 
   private final String TAG = SequenceGameView.class.getName();
+
+  public interface GameResultCallback {
+    void gameSuccess();
+    void gameFail();
+  }
+
+  private GameResultCallback gameResultCallback;
 
   private final int row = 3;
   private final int column = 5;
@@ -33,9 +43,11 @@ public class SequenceGameView extends RelativeLayout {
   private Button[][] buttonSlot;
   private LinearLayout lifeLinearLayout;
   private ImageView[] lifeViewSlot;
+  private GameWaitView gameWaitView;
 
-  public SequenceGameView(Context context) {
+  public SequenceGameView(Context context, GameResultCallback gameResultCallback) {
     super(context);
+    this.gameResultCallback = gameResultCallback;
     init(context);
   }
 
@@ -147,6 +159,8 @@ public class SequenceGameView extends RelativeLayout {
     }
 
     addView(horizontalLinearLayout);
+
+    gameWaitView = new GameWaitView(context);
   }
 
   private void setRandomDataInSlot(int[][] slot) {
@@ -175,12 +189,26 @@ public class SequenceGameView extends RelativeLayout {
           if (number - beforeNumber == 1) {
             button.setVisibility(View.INVISIBLE);
             beforeNumber = number;
+            if (number == 15) {
+              gameWaitView.setContents("잘 하셨습니다. 다른 플레이어가 끝나기를 기다려주세요.");
+              if(gameWaitView.getParent()!=null)
+                ((ViewGroup)gameWaitView.getParent()).removeView(gameWaitView);
+              addView(gameWaitView);
+              gameResultCallback.gameSuccess();
+            }
           }
           else {
-            if (lifeIndex < life - 1) {
+            if (lifeIndex < life) {
               lifeSlot[lifeIndex] = 1;
               lifeViewSlot[lifeIndex].setBackgroundColor(Color.BLACK);
               lifeIndex++;
+              if (lifeIndex == 3) {
+                gameWaitView.setContents("실패하셨습니다. 한잔 드시죠 ^^7 다른 플레이어가 끝나기를 기다려주세요.");
+                if(gameWaitView.getParent()!=null)
+                  ((ViewGroup)gameWaitView.getParent()).removeView(gameWaitView);
+                addView(gameWaitView);
+                gameResultCallback.gameFail();
+              }
             }
           }
         }
