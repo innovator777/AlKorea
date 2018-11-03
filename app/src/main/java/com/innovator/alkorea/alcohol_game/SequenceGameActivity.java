@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -90,11 +91,6 @@ public class SequenceGameActivity extends GameActivity implements AlKoreaTimerCa
     rootLayout.addView(gameFinishView);
   }
 
-  @Override
-  public void endGame() {
-    updateTargetPlayerState(Room.STATE.ROOM);
-    finish();
-  }
 
   @Override
   public void gameSuccess() {
@@ -124,12 +120,6 @@ public class SequenceGameActivity extends GameActivity implements AlKoreaTimerCa
       });
     }
     else {
-//      runOnUiThread(new Runnable() {
-//        @Override
-//        public void run() {
-//          timeTextView.setText("00.000");
-//        }
-//      });
       updateTargetPlayerScore();
       updateTargetPlayerState(Room.STATE.FINISH);
       gameTimer.stopTimer();

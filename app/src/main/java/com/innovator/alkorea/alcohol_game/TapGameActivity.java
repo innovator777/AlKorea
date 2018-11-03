@@ -78,12 +78,6 @@ public class TapGameActivity extends GameActivity {
   }
 
   @Override
-  public void endGame() {
-    updateTargetPlayerState(Room.STATE.ROOM);
-    finish();
-  }
-
-  @Override
   public void endTimer(String tag) {
     if(tag.equals(ReadyTimer.class.getName())) {
       readyTimer.stopTimer();
@@ -97,7 +91,6 @@ public class TapGameActivity extends GameActivity {
       gameTimer.startTimer();
     }
     else {
-      Log.i(TAG, "으아아아");
       setScore(tapGameView.getTapCount());
       updateTargetPlayerScore();
       updateTargetPlayerState(Room.STATE.FINISH);

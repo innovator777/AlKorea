@@ -21,7 +21,6 @@ abstract public class AlKoreaTimer {
   }
 
   public void startTimer() {
-    Log.i(TAG, thread.getState().toString());
     if (thread.getState() == Thread.State.NEW) {
       thread.start();
     } else if (thread.getState() == Thread.State.TERMINATED) {
@@ -33,6 +32,7 @@ abstract public class AlKoreaTimer {
   }
 
   public void stopTimer() {
-    thread.interrupt();
+    if (thread != null)
+      thread.interrupt();
   }
 }

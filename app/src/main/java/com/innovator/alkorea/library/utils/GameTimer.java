@@ -27,9 +27,7 @@ public class GameTimer extends AlKoreaTimer {
     return new Runnable() {
       @Override
       public void run() {
-        while (time > stopTime) {
-          Log.i(TAG, String.valueOf(thread.getId()));
-          Log.i(TAG, thread.getState().toString());
+        while (!Thread.currentThread().isInterrupted()) {
           Message message = new Message();
           message.arg1 = time;
           handler.sendMessage(message);

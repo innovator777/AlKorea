@@ -101,7 +101,7 @@ public class RoomManager {
     removeDatabaseReferenceEventListener();
   }
 
-  private void removeDatabaseReferenceEventListener() {
+  public void removeDatabaseReferenceEventListener() {
     if (roomDatabaseReference != null && roomValueEventListener != null)
       roomDatabaseReference.removeEventListener(roomValueEventListener);
   }

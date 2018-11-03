@@ -31,7 +31,7 @@ public class ReadyTimer extends AlKoreaTimer {
     return new Runnable() {
       @Override
       public void run() {
-        while (count < stopCount) {
+        while (!Thread.currentThread().isInterrupted()) {
           Message message = new Message();
           message.arg1 = count;
           handler.sendMessage(message);

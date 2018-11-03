@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -46,6 +47,7 @@ abstract public class GameActivity extends Activity implements GameManager.GameE
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    gameManager = new GameManager(getBaseContext(), GameActivity.this);
 
     RelativeLayout.LayoutParams rootLayoutParams = new RelativeLayout.LayoutParams(
         RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -74,22 +76,21 @@ abstract public class GameActivity extends Activity implements GameManager.GameE
     public boolean handleMessage(Message message) {
       int value = message.arg1;
       gameReadyView.getNumberCountTextView().setText(gameReadyView.getCountArray()[value]);
-//      gameReadyView.upCountIndex();
       return false;
     }
   });
 
   @Override
-  protected void onStart() {
-    super.onStart();
-    gameManager = new GameManager(getBaseContext(), GameActivity.this);
+  protected void onStop() {
+    super.onStop();
+    if (gameManager != null)
+      gameManager.removeDatabaseReferenceEventListener();
   }
 
   @Override
-  protected void onDestroy() {
-    super.onDestroy();
-    if (gameManager != null)
-      gameManager.removeDatabaseReferenceEventListener();
+  public void endGame() {
+    updateTargetPlayerState(Room.STATE.ROOM);
+    finish();
   }
 
   @Override

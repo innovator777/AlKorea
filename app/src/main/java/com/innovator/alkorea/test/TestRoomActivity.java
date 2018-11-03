@@ -158,7 +158,17 @@ public class TestRoomActivity extends Activity implements RoomManager.RoomEventL
   @Override
   protected void onStart() {
     super.onStart();
+    if (roomManager != null) {
+      roomManager.removeDatabaseReferenceEventListener();
+    }
     roomManager = new RoomManager(getBaseContext(), this);
+  }
+
+  @Override
+  protected void onStop() {
+    super.onStop();
+    if (roomManager != null)
+      roomManager.removeDatabaseReferenceEventListener();
   }
 
   @Override
@@ -177,17 +187,14 @@ public class TestRoomActivity extends Activity implements RoomManager.RoomEventL
 
   @Override
   public void startGame(Room.GAME game) {
-    Intent intent;
     switch (game) {
       case NOT:
         break;
       case SEQUENCE:
-        intent = new Intent(TestRoomActivity.this, SequenceGameActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(TestRoomActivity.this, SequenceGameActivity.class));
         break;
       case TAP:
-        intent = new Intent(TestRoomActivity.this, TapGameActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(TestRoomActivity.this, TapGameActivity.class));
         break;
     }
   }

@@ -49,7 +49,6 @@ public class GameManager {
         if (room.getGame() != Room.GAME.NOT) {
           for (String key : room.getPlayerState().keySet()) {
             Room.STATE state = room.getPlayerState().get(key);
-            Log.i(TAG, state.toString());
             if (state == Room.STATE.GAME) {
               return;
             }
