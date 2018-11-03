@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.innovator.alkorea.RoomManager;
 import com.innovator.alkorea.alcohol_game.SequenceGameActivity;
+import com.innovator.alkorea.alcohol_game.TapGameActivity;
 import com.innovator.alkorea.library.models.Player;
 import com.innovator.alkorea.library.models.Room;
 import com.innovator.alkorea.library.utils.FirebaseUtils;
@@ -32,7 +33,7 @@ public class TestRoomActivity extends Activity implements RoomManager.RoomEventL
   private LinearLayout horizontalLayout;
 
   private TextView masterNameTextView, playerCountTextView;
-  private Button exitButton, gameButton;
+  private Button exitButton, gameButton1, gameButton2;
   private ImageView qrcodeImageView;
   private RecyclerView playerRecyclerView;
   private RecyclerView.LayoutManager layoutManager;
@@ -87,11 +88,11 @@ public class TestRoomActivity extends Activity implements RoomManager.RoomEventL
       }
     });
 
-    gameButton = new Button(getApplicationContext());
-    gameButton.setLayoutParams(buttonParams);
-    gameButton.setText("순서대로 게임");
+    gameButton1 = new Button(getApplicationContext());
+    gameButton1.setLayoutParams(buttonParams);
+    gameButton1.setText("순서대로 게임");
 
-    gameButton.setOnClickListener(new View.OnClickListener() {
+    gameButton1.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         String roomId = OtherUtils.getSharedPreferencesStringData(getApplicationContext(), "roomId", "");
@@ -101,11 +102,26 @@ public class TestRoomActivity extends Activity implements RoomManager.RoomEventL
       }
     });
 
+    gameButton2 = new Button(getApplicationContext());
+    gameButton2.setLayoutParams(buttonParams);
+    gameButton2.setText("탭 게임");
+
+    gameButton2.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        String roomId = OtherUtils.getSharedPreferencesStringData(getApplicationContext(), "roomId", "");
+        if (!roomId.isEmpty()) {
+          FirebaseUtils.updateTargetRoomGame(roomId, Room.GAME.TAP);
+        }
+      }
+    });
+
 
     horizontalLayout.addView(masterNameTextView);
     horizontalLayout.addView(playerCountTextView);
     horizontalLayout.addView(exitButton);
-    horizontalLayout.addView(gameButton);
+    horizontalLayout.addView(gameButton1);
+    horizontalLayout.addView(gameButton2);
 
     rootVerticalLayout.addView(horizontalLayout);
 
@@ -161,11 +177,16 @@ public class TestRoomActivity extends Activity implements RoomManager.RoomEventL
 
   @Override
   public void startGame(Room.GAME game) {
+    Intent intent;
     switch (game) {
       case NOT:
         break;
       case SEQUENCE:
-        Intent intent = new Intent(TestRoomActivity.this, SequenceGameActivity.class);
+        intent = new Intent(TestRoomActivity.this, SequenceGameActivity.class);
+        startActivity(intent);
+        break;
+      case TAP:
+        intent = new Intent(TestRoomActivity.this, TapGameActivity.class);
         startActivity(intent);
         break;
     }

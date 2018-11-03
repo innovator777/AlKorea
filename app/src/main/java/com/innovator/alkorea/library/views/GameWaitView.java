@@ -60,7 +60,7 @@ public class GameWaitView extends RelativeLayout {
     contentsTextView.setLayoutParams(contentsTextViewParams);
     contentsTextView.setTypeface(null, Typeface.BOLD);
     contentsTextView.setTextColor(Color.WHITE);
-    contentsTextView.setTextSize(OtherUtils.convertDptoPx(context,24));
+    contentsTextView.setTextSize(OtherUtils.convertDpToPx(context,24));
 
     addView(backgroundLayout);
     addView(contentsTextView);

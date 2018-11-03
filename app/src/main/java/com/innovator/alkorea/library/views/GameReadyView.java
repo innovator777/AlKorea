@@ -69,7 +69,7 @@ public class GameReadyView extends RelativeLayout {
     titleTextView = new TextView(context);
     titleTextView.setLayoutParams(titleTextViewParams);
     titleTextView.setTypeface(null, Typeface.BOLD);
-    titleTextView.setTextSize(OtherUtils.convertDptoPx(context,24));
+    titleTextView.setTextSize(OtherUtils.convertDpToPx(context,24));
 
     RelativeLayout.LayoutParams numberCountTextViewParams = new RelativeLayout.LayoutParams(
         RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -80,7 +80,7 @@ public class GameReadyView extends RelativeLayout {
     numberCountTextView = new TextView(context);
     numberCountTextView.setLayoutParams(numberCountTextViewParams);
     numberCountTextView.setTypeface(null, Typeface.BOLD);
-    numberCountTextView.setTextSize(OtherUtils.convertDptoPx(context, 72));
+    numberCountTextView.setTextSize(OtherUtils.convertDpToPx(context, 72));
 
     RelativeLayout.LayoutParams explanationTextViewParams = new RelativeLayout.LayoutParams(
         RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -92,7 +92,7 @@ public class GameReadyView extends RelativeLayout {
     explanationTextView = new TextView(context);
     explanationTextView.setLayoutParams(explanationTextViewParams);
     explanationTextView.setTypeface(null, Typeface.BOLD);
-    explanationTextView.setTextSize(OtherUtils.convertDptoPx(context,12));
+    explanationTextView.setTextSize(OtherUtils.convertDpToPx(context,12));
 
     backgroundLayout.addView(titleTextView);
     backgroundLayout.addView(numberCountTextView);

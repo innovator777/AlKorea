@@ -1,37 +1,42 @@
 package com.innovator.alkorea.alcohol_game;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.innovator.alkorea.GameManager;
-import com.innovator.alkorea.library.models.Player;
 import com.innovator.alkorea.library.models.Room;
-import com.innovator.alkorea.library.utils.AlKoreaTimer;
 import com.innovator.alkorea.library.utils.AlKoreaTimerCallbackListener;
 import com.innovator.alkorea.library.utils.FirebaseUtils;
+import com.innovator.alkorea.library.utils.GameTimer;
 import com.innovator.alkorea.library.utils.OtherUtils;
+import com.innovator.alkorea.library.utils.ReadyTimer;
+import com.innovator.alkorea.library.views.GameFinishCallbackListener;
+import com.innovator.alkorea.library.views.GameFinishView;
 import com.innovator.alkorea.library.views.GameReadyView;
 
-import java.util.TimerTask;
-
 //Create innovator(JongChan Yang)
-abstract public class GameActivity extends Activity implements GameManager.GameEventListener {
+abstract public class GameActivity extends Activity implements GameManager.GameEventListener,
+                                                                AlKoreaTimerCallbackListener,
+                                                                GameFinishCallbackListener {
 
   private final String TAG = GameActivity.class.getName();
   protected final int gamePlayTimeStadard = 10000;
 
-  abstract protected void gameStart();
-
-  AlKoreaTimerCallbackListener alKoreaTimerCallbackListener;
-
   protected RelativeLayout rootLayout;
   protected GameReadyView gameReadyView;
 
-  protected AlKoreaTimer readyTimer;
+  protected ReadyTimer readyTimer;
+  protected GameTimer gameTimer;
   protected GameManager gameManager;
+  protected GameFinishView gameFinishView;
+  protected TextView timeTextView;
 
   // millisecond 단위
   protected int gamePlayTime = gamePlayTimeStadard;
@@ -50,33 +55,29 @@ abstract public class GameActivity extends Activity implements GameManager.GameE
     setContentView(rootLayout);
 
     gameReadyView = new GameReadyView(getApplicationContext());
-    alKoreaTimerCallbackListener = new AlKoreaTimerCallbackListener() {
-      @Override
-      public void stopTimer() {
-        runOnUiThread(new Runnable() {
-          @Override
-          public void run() {
-            rootLayout.removeView(gameReadyView);
-          }
-        });
-        gameStart();
-      }
-    };
+    readyTimer = new ReadyTimer(readyHander, GameActivity.this);
 
-    readyTimer = new AlKoreaTimer(new TimerTask() {
-      @Override
-      public void run() {
-        runOnUiThread(new Runnable() {
-          @Override
-          public void run() {
-            gameReadyView.getNumberCountTextView().setText(gameReadyView.getCountArray()[gameReadyView.getCountIndex()]);
-            gameReadyView.upCountIndex();
-          }
-        });
-      }
-    }, 4000, 0, 1000);
-    readyTimer.setCallbackListener(alKoreaTimerCallbackListener);
+    RelativeLayout.LayoutParams timeTextViewParams = new RelativeLayout.LayoutParams(
+        RelativeLayout.LayoutParams.WRAP_CONTENT,
+        RelativeLayout.LayoutParams.WRAP_CONTENT);
+    timeTextViewParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+    timeTextViewParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+    timeTextView = new TextView(getBaseContext());
+    timeTextView.setLayoutParams(timeTextViewParams);
+    timeTextView.setText(OtherUtils.convertDateFormat(gamePlayTime));
+    timeTextView.setTextColor(Color.BLACK);
   }
+
+  private Handler readyHander = new Handler(new Handler.Callback() {
+    @Override
+    public boolean handleMessage(Message message) {
+      int value = message.arg1;
+      gameReadyView.getNumberCountTextView().setText(gameReadyView.getCountArray()[value]);
+//      gameReadyView.upCountIndex();
+      return false;
+    }
+  });
 
   @Override
   protected void onStart() {
@@ -89,6 +90,11 @@ abstract public class GameActivity extends Activity implements GameManager.GameE
     super.onDestroy();
     if (gameManager != null)
       gameManager.removeDatabaseReferenceEventListener();
+  }
+
+  @Override
+  public void onBackPressed() {
+
   }
 
   protected void updateTargetPlayerState(Room.STATE state) {

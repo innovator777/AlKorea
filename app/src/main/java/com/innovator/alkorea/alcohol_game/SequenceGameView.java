@@ -144,7 +144,8 @@ public class SequenceGameView extends RelativeLayout {
       for (int c = 0; c < column; c++) {
         buttonSlot[r][c] = new Button(context);
         buttonSlot[r][c].setLayoutParams(buttonParams);
-        buttonSlot[r][c].setText(String.valueOf(numberSlot[r][c]));
+        buttonSlot[r][c].setTextColor(Color.WHITE);
+//        buttonSlot[r][c].setText(String.valueOf(numberSlot[r][c]));
         buttonSlot[r][c].setOnClickListener(buttonClickListener);
       }
     }
@@ -175,6 +176,14 @@ public class SequenceGameView extends RelativeLayout {
     for (int i = 0; i < slot.length; i++) {
       for (int j = 0; j < slot[i].length; j++) {
         slot[i][j] = (Integer) list.get((i * column) + j);
+      }
+    }
+  }
+
+  public void setButtonNumber() {
+    for (int r = 0; r < row; r++) {
+      for (int c = 0; c < column; c++) {
+        buttonSlot[r][c].setText(String.valueOf(numberSlot[r][c]));
       }
     }
   }

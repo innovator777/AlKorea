@@ -12,7 +12,7 @@ public class Room implements Parcelable {
   }
 
   public enum GAME {
-    NOT, SEQUENCE
+    NOT, SEQUENCE, TAP
   }
 
   private String masterUID;

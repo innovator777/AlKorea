@@ -1,5 +1,6 @@
 package com.innovator.alkorea.library.utils;
 
+//Create innovator(JongChan Yang)
 public interface AlKoreaTimerCallbackListener {
-  void endTimer();
+  void endTimer(String tag);
 }

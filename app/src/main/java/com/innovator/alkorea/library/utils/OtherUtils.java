@@ -3,6 +3,8 @@ package com.innovator.alkorea.library.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.TypedValue;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -20,7 +22,7 @@ public class OtherUtils {
 
   private static final String preferenceKey = "preference";
 
-  public static float convertDptoPx(Context context, float dp) {
+  public static float convertDpToPx(Context context, float dp) {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
   }
 
@@ -70,7 +72,7 @@ public class OtherUtils {
     editor.commit();
   }
 
-  public static Map<String, Integer> sortByComparator(Map<String, Integer> unsortMap) {
+  public static Map<String, Integer> sortByComparator(Map<String, Integer> unsortMap, final boolean order) {
 
     List<Map.Entry<String, Integer>> list = new LinkedList<>(unsortMap.entrySet());
 
@@ -78,12 +80,11 @@ public class OtherUtils {
     Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
       @Override
       public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
-//        if (order) {
-//          return o1.getValue().compareTo(o2.getValue());
-//        } else {
-//          return o2.getValue().compareTo(o1.getValue());
-//        }
-        return o1.getValue().compareTo(o2.getValue());
+        if (order) {
+          return o1.getValue().compareTo(o2.getValue());
+        } else {
+          return o2.getValue().compareTo(o1.getValue());
+        }
       }
     });
 
@@ -94,5 +95,17 @@ public class OtherUtils {
     }
     return sortedMap;
   }
+
+  public static void enableDisableViewGroup(ViewGroup viewGroup, boolean enabled) {
+    int childCount = viewGroup.getChildCount();
+    for (int i = 0; i < childCount; i++) {
+      View view = viewGroup.getChildAt(i);
+      view.setEnabled(enabled);
+      if (view instanceof ViewGroup) {
+        enableDisableViewGroup((ViewGroup) view, enabled);
+      }
+    }
+  }
+
 
 }

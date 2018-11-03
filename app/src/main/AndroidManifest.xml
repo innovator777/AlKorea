@@ -10,17 +10,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".alcohol_game.GameActivity"/>
+        <activity android:name=".alcohol_game.SequenceGameActivity"/>
+        <activity android:name=".alcohol_game.TapGameActivity"/>
+        <activity android:name=".test.TestRoomActivity"/>
+        <activity android:name=".SettingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".alcohol_game.GameActivity"/>
-        <activity android:name=".alcohol_game.SequenceGameActivity"/>
-        <activity android:name=".test.TestRoomActivity"/>
     </application>
 
 </manifest>

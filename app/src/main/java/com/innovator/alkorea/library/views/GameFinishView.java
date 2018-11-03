@@ -6,7 +6,6 @@ import android.graphics.Typeface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +25,8 @@ public class GameFinishView extends RelativeLayout {
   private final String TAG = GameFinishView.class.getName();
 
   private Context context;
+
+  private GameFinishCallbackListener gameFinishCallbackListener;
   private RelativeLayout backgroundLayout;
   private LinearLayout mainLinearLayout, topLinearLayout, bottomLinearLayout;
   private TextView finishTextView, resultTextView;
@@ -38,8 +39,9 @@ public class GameFinishView extends RelativeLayout {
   private GameResultAdapter gameResultAdapter;
   private List<Result> resultList;
 
-  public GameFinishView(Context context) {
+  public GameFinishView(Context context, GameFinishCallbackListener gameFinishCallbackListener) {
     super(context);
+    this.gameFinishCallbackListener = gameFinishCallbackListener;
     init(context);
   }
 
@@ -111,7 +113,7 @@ public class GameFinishView extends RelativeLayout {
     finishTextView.setLayoutParams(finishTextViewParams);
     finishTextView.setTypeface(null, Typeface.BOLD);
     finishTextView.setTextColor(Color.WHITE);
-    finishTextView.setTextSize(OtherUtils.convertDptoPx(context,42));
+    finishTextView.setTextSize(OtherUtils.convertDpToPx(context,42));
     finishTextView.setText("Finish");
 
     LinearLayout.LayoutParams resultTextViewParams = new LinearLayout.LayoutParams(
@@ -123,12 +125,12 @@ public class GameFinishView extends RelativeLayout {
     resultTextView.setLayoutParams(resultTextViewParams);
     resultTextView.setTypeface(null, Typeface.BOLD);
     resultTextView.setTextColor(Color.WHITE);
-    resultTextView.setTextSize(OtherUtils.convertDptoPx(context,30));
+    resultTextView.setTextSize(OtherUtils.convertDpToPx(context,30));
     resultTextView.setText("Result");
 
     LinearLayout.LayoutParams lineLayoutParams = new LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.MATCH_PARENT,
-        (int)OtherUtils.convertDptoPx(context,1));
+        (int)OtherUtils.convertDpToPx(context,1));
 
     lineLayout = new LinearLayout(context);
     lineLayout.setLayoutParams(lineLayoutParams);
@@ -159,9 +161,17 @@ public class GameFinishView extends RelativeLayout {
     exitButton = new Button(context);
     exitButton.setLayoutParams(exitButtonParams);
     exitButton.setText("나가기");
+    exitButton.setOnClickListener(exitButtonClickListener);
 
     bottomLinearLayout.addView(exitButton);
   }
+
+  private View.OnClickListener exitButtonClickListener = new OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      gameFinishCallbackListener.goRoom();
+    }
+  };
 
   public void setResultList(List<Result> resultList) {
     this.resultList = resultList;
@@ -169,8 +179,8 @@ public class GameFinishView extends RelativeLayout {
     gameResultAdapter.notifyDataSetChanged();
   }
 
-  public Button getExitButton() {
-    return exitButton;
-  }
+//  public Button getExitButton() {
+//    return exitButton;
+//  }
 
 }
