@@ -1,4 +1,4 @@
-package com.innovator.alkorea.test;
+package com.innovator.alkorea.views.view_holder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

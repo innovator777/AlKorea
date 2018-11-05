@@ -1,15 +1,15 @@
-package com.innovator.alkorea.alcohol_game;
+package com.innovator.alkorea.game;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import com.innovator.alkorea.library.models.Player;
 import com.innovator.alkorea.library.models.Result;
 import com.innovator.alkorea.library.models.Room;
+import com.innovator.alkorea.library.utils.AlKoreaTimerCallbackListener;
 import com.innovator.alkorea.library.utils.FirebaseUtils;
 import com.innovator.alkorea.library.utils.GameTimer;
 import com.innovator.alkorea.library.utils.OtherUtils;
@@ -21,29 +21,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TapGameActivity extends GameActivity {
+//Create innovator(JongChan Yang)
+public class SequenceGameActivity extends GameActivity implements AlKoreaTimerCallbackListener, SequenceGameView.GameResultCallback {
 
-  protected final String TAG = TapGameActivity.class.getName();
+  private final String TAG = SequenceGameActivity.class.getName();
 
-  private TapGameView tapGameView;
+  private SequenceGameView sequenceGameView;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    gameReadyView.getTitleTextView().setText("순서대로");
+    gameReadyView.getExplanationTextView().setText("순서대로 빠르게 누르세요.");
 
-    gameReadyView.getTitleTextView().setText("탭탭게임");
-    gameReadyView.getExplanationTextView().setText("10초동안 화면을 마구마구 터치하세요.");
-
-    tapGameView = new TapGameView(getBaseContext());
+    sequenceGameView = new SequenceGameView(getBaseContext(), this);
     gameFinishView = new GameFinishView(getBaseContext(), this);
 
-    tapGameView.addView(timeTextView);
-    OtherUtils.enableDisableViewGroup(tapGameView, false);
+    sequenceGameView.addView(timeTextView);
+    OtherUtils.enableDisableViewGroup(sequenceGameView, false);
 
-    rootLayout.addView(tapGameView);
+    rootLayout.addView(sequenceGameView);
     rootLayout.addView(gameReadyView);
-
     readyTimer.startTimer();
+
     gameTimer = new GameTimer(gameHandler, this);
   }
 
@@ -58,7 +58,7 @@ public class TapGameActivity extends GameActivity {
   });
 
   @Override
-  public void showGameResult(HashMap<String, Player> playerList, HashMap<String, Integer> resultList) {
+  public void showGameResult(final HashMap<String, Player> playerList, final HashMap<String, Integer> resultList) {
     Map<String, Integer> descResultList = OtherUtils.sortByComparator(resultList, false);
     final List<Result> results = new ArrayList<>();
     int rank = 1;
@@ -66,37 +66,59 @@ public class TapGameActivity extends GameActivity {
       Result result = new Result();
       result.setRank(String.valueOf(rank));
       result.setPlayerInfo(playerList.get(key));
-      result.setResult(String.valueOf(resultList.get(key)));
+      int value = resultList.get(key);
+      if (value == 0) {
+        result.setResult("over");
+      }
+      else if (value == -3) {
+        result.setResult("3out");
+      }
+      else {
+        result.setResult(OtherUtils.convertDateFormat(value));
+      }
       results.add(result);
       rank++;
     }
     gameFinishView.setResultList(results);
-    rootLayout.removeView(tapGameView);
+    rootLayout.removeView(sequenceGameView);
     if(gameFinishView.getParent()!=null)
       ((ViewGroup)gameFinishView.getParent()).removeView(gameFinishView);
     rootLayout.addView(gameFinishView);
   }
 
+
+  @Override
+  public void gameSuccess() {
+    setScore(gamePlayTimeStadard - gamePlayTime);
+    updateTargetPlayerScore();
+  }
+
+  @Override
+  public void gameFail() {
+    setScore(-3);
+    updateTargetPlayerScore();
+  }
+
+
   @Override
   public void endTimer(String tag) {
-    if(tag.equals(ReadyTimer.class.getName())) {
+    if (tag.equals(ReadyTimer.class.getName())) {
       readyTimer.stopTimer();
       runOnUiThread(new Runnable() {
         @Override
         public void run() {
+          sequenceGameView.setButtonNumber();
           rootLayout.removeView(gameReadyView);
-          OtherUtils.enableDisableViewGroup(tapGameView, true);
+          OtherUtils.enableDisableViewGroup(sequenceGameView, true);
+          gameTimer.startTimer();
         }
       });
-      gameTimer.startTimer();
     }
     else {
-      setScore(tapGameView.getTapCount());
       updateTargetPlayerScore();
       updateTargetPlayerState(Room.STATE.FINISH);
       gameTimer.stopTimer();
     }
-
   }
 
   @Override

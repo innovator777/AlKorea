@@ -1,4 +1,4 @@
-package com.innovator.alkorea.test;
+package com.innovator.alkorea.views.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.innovator.alkorea.R;
 import com.innovator.alkorea.library.models.Player;
+import com.innovator.alkorea.views.view_holder.TestPlayerViewHolder;
 
 import java.util.List;
 

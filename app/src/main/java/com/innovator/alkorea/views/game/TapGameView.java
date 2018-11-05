@@ -1,4 +1,4 @@
-package com.innovator.alkorea.alcohol_game;
+package com.innovator.alkorea.game;
 
 import android.content.Context;
 import android.graphics.Color;

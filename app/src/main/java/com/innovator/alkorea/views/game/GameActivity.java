@@ -1,4 +1,4 @@
-package com.innovator.alkorea.alcohol_game;
+package com.innovator.alkorea.game;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 

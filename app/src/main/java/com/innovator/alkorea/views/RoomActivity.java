@@ -13,10 +13,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.innovator.alkorea.RoomManager;
-import com.innovator.alkorea.alcohol_game.SequenceGameActivity;
-import com.innovator.alkorea.alcohol_game.TapGameActivity;
+import com.innovator.alkorea.game.SequenceGameActivity;
+import com.innovator.alkorea.game.TapGameActivity;
 import com.innovator.alkorea.library.models.Player;
 import com.innovator.alkorea.library.models.Room;
 import com.innovator.alkorea.library.utils.FirebaseUtils;
