@@ -1,19 +1,21 @@
-package com.innovator.alkorea.game;
+package com.innovator.alkorea.views.game;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.innovator.alkorea.library.models.Player;
 import com.innovator.alkorea.library.models.Result;
 import com.innovator.alkorea.library.models.Room;
-import com.innovator.alkorea.library.utils.AlKoreaTimerCallbackListener;
+import com.innovator.alkorea.library.utils.timer.AlKoreaTimerCallbackListener;
 import com.innovator.alkorea.library.utils.FirebaseUtils;
-import com.innovator.alkorea.library.utils.GameTimer;
+import com.innovator.alkorea.library.utils.timer.GameTimer;
 import com.innovator.alkorea.library.utils.OtherUtils;
-import com.innovator.alkorea.library.utils.ReadyTimer;
+import com.innovator.alkorea.library.utils.timer.ReadyTimer;
 import com.innovator.alkorea.library.views.GameFinishView;
 
 import java.util.ArrayList;
@@ -58,14 +60,15 @@ public class SequenceGameActivity extends GameActivity implements AlKoreaTimerCa
   });
 
   @Override
-  public void showGameResult(final HashMap<String, Player> playerList, final HashMap<String, Integer> resultList) {
+  public void showGameResult(final String masterUid, final HashMap<String, Player> playerList, final HashMap<String, Integer> resultList) {
+    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     Map<String, Integer> descResultList = OtherUtils.sortByComparator(resultList, false);
     final List<Result> results = new ArrayList<>();
     int rank = 1;
     for (String key : descResultList.keySet()) {
       Result result = new Result();
-      result.setRank(String.valueOf(rank));
       result.setPlayerInfo(playerList.get(key));
+      result.setRank("벌칙");
       int value = resultList.get(key);
       if (value == 0) {
         result.setResult("over");
@@ -75,10 +78,14 @@ public class SequenceGameActivity extends GameActivity implements AlKoreaTimerCa
       }
       else {
         result.setResult(OtherUtils.convertDateFormat(value));
+        result.setRank(String.valueOf(rank));
+        rank++;
       }
       results.add(result);
-      rank++;
     }
+    results.get(results.size()-1).setRank("벌칙");
+    if(!uid.equals(masterUid))
+      gameFinishView.enableExitButton(false);
     gameFinishView.setResultList(results);
     rootLayout.removeView(sequenceGameView);
     if(gameFinishView.getParent()!=null)
@@ -123,8 +130,8 @@ public class SequenceGameActivity extends GameActivity implements AlKoreaTimerCa
 
   @Override
   public void goRoom() {
-    String roomId = OtherUtils.getSharedPreferencesStringData(getBaseContext(), "roomId", "");
-    if (!roomId.isEmpty())
+    String roomId = OtherUtils.getSharedPreferencesStringData(getBaseContext(), "roomId", null);
+    if (roomId != null)
       FirebaseUtils.updateTargetRoomGame(roomId, Room.GAME.NOT);
   }
 }

@@ -20,7 +20,7 @@ public class QRCodeUtils {
     QRCodeWriter qrCodeWriter = new QRCodeWriter();
     Bitmap bitmap = null;
     try {
-      bitmap = toBitmap(qrCodeWriter.encode(contents, BarcodeFormat.QR_CODE, 200, 200));
+      bitmap = toBitmap(qrCodeWriter.encode(contents, BarcodeFormat.QR_CODE, 300, 300));
     } catch (WriterException e) {
       e.printStackTrace();
     }

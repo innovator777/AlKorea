@@ -1,4 +1,4 @@
-package com.innovator.alkorea;
+package com.innovator.alkorea.views;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,12 +15,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.innovator.alkorea.R;
 import com.innovator.alkorea.library.models.Player;
 import com.innovator.alkorea.library.models.Room;
 import com.innovator.alkorea.library.utils.FirebaseUtils;
 import com.innovator.alkorea.library.utils.OtherUtils;
 import com.innovator.alkorea.library.utils.QRCodeUtils;
-import com.innovator.alkorea.test.TestRoomActivity;
 
 import java.util.HashMap;
 
@@ -71,13 +71,14 @@ public class MainActivity extends Activity {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         String key = FirebaseUtils.createRoomIDAutoKey();
         OtherUtils.saveSharedPreferenceStringData(getApplicationContext(), "roomId", key);
-        String name = OtherUtils.getSharedPreferencesStringData(getBaseContext(), "sNickname", "");
-        if (!name.isEmpty()) {
-          Player player = new Player(name, 0);
+        String name = OtherUtils.getSharedPreferencesStringData(getBaseContext(), "sNickname", null);
+        int sex = OtherUtils.getSharedPreferencesIntData(getBaseContext(), "sGender", 0);
+        if (name != null) {
+          Player player = new Player(name, sex);
           HashMap<String, Player> playerHashMap = new HashMap<>();
           playerHashMap.put(uid, player);
           FirebaseUtils.addRoomData(key, new Room(uid, Room.GAME.NOT, playerHashMap));
-          Intent intent = new Intent(MainActivity.this, TestRoomActivity.class);
+          Intent intent = new Intent(MainActivity.this, RoomActivity.class);
           startActivity(intent);
         }
       }
@@ -96,10 +97,11 @@ public class MainActivity extends Activity {
         String roomId = result.getContents();
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         OtherUtils.saveSharedPreferenceStringData(getBaseContext(), "roomId", roomId);
-        String name = OtherUtils.getSharedPreferencesStringData(getBaseContext(), "sNickname", "");
-        if (!name.isEmpty()) {
-          FirebaseUtils.admitTargetRoom(roomId, uid, new Player(name, 0));
-          Intent intent = new Intent(MainActivity.this, TestRoomActivity.class);
+        String name = OtherUtils.getSharedPreferencesStringData(getBaseContext(), "sNickname", null);
+        int sex = OtherUtils.getSharedPreferencesIntData(getBaseContext(), "sGender", 0);
+        if (name != null) {
+          FirebaseUtils.admitTargetRoom(roomId, uid, new Player(name, sex));
+          Intent intent = new Intent(MainActivity.this, RoomActivity.class);
           startActivity(intent);
         }
       }

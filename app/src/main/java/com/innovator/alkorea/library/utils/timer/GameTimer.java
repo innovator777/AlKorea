@@ -1,7 +1,6 @@
-package com.innovator.alkorea.library.utils;
+package com.innovator.alkorea.library.utils.timer;
 
 import android.os.Message;
-import android.util.Log;
 
 public class GameTimer extends AlKoreaTimer {
 

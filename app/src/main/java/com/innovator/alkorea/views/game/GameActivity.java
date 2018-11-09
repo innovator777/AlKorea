@@ -1,4 +1,4 @@
-package com.innovator.alkorea.game;
+package com.innovator.alkorea.views.game;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -10,13 +10,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.innovator.alkorea.GameManager;
+import com.innovator.alkorea.manager.GameManager;
 import com.innovator.alkorea.library.models.Room;
-import com.innovator.alkorea.library.utils.AlKoreaTimerCallbackListener;
+import com.innovator.alkorea.library.utils.timer.AlKoreaTimerCallbackListener;
 import com.innovator.alkorea.library.utils.FirebaseUtils;
-import com.innovator.alkorea.library.utils.GameTimer;
+import com.innovator.alkorea.library.utils.timer.GameTimer;
 import com.innovator.alkorea.library.utils.OtherUtils;
-import com.innovator.alkorea.library.utils.ReadyTimer;
+import com.innovator.alkorea.library.utils.timer.ReadyTimer;
 import com.innovator.alkorea.library.views.GameFinishCallbackListener;
 import com.innovator.alkorea.library.views.GameFinishView;
 import com.innovator.alkorea.library.views.GameReadyView;
@@ -99,16 +99,16 @@ abstract public class GameActivity extends Activity implements GameManager.GameE
 
   protected void updateTargetPlayerState(Room.STATE state) {
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    String roomId = OtherUtils.getSharedPreferencesStringData(getApplicationContext(), "roomId", "");
-    if(!roomId.isEmpty()) {
+    String roomId = OtherUtils.getSharedPreferencesStringData(getApplicationContext(), "roomId", null);
+    if(roomId != null) {
       FirebaseUtils.updateTargetRoomPlayerState(roomId, uid, state);
     }
   }
 
   protected void updateTargetPlayerScore() {
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    String roomId = OtherUtils.getSharedPreferencesStringData(getApplicationContext(), "roomId", "");
-    if(!roomId.isEmpty()) {
+    String roomId = OtherUtils.getSharedPreferencesStringData(getApplicationContext(), "roomId", null);
+    if(roomId != null) {
       FirebaseUtils.updateTargetRoomPlayerScore(roomId, uid, score);
     }
   }

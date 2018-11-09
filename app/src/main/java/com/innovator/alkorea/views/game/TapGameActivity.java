@@ -1,4 +1,4 @@
-package com.innovator.alkorea.game;
+package com.innovator.alkorea.views.game;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -6,13 +6,14 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.innovator.alkorea.library.models.Player;
 import com.innovator.alkorea.library.models.Result;
 import com.innovator.alkorea.library.models.Room;
 import com.innovator.alkorea.library.utils.FirebaseUtils;
-import com.innovator.alkorea.library.utils.GameTimer;
+import com.innovator.alkorea.library.utils.timer.GameTimer;
 import com.innovator.alkorea.library.utils.OtherUtils;
-import com.innovator.alkorea.library.utils.ReadyTimer;
+import com.innovator.alkorea.library.utils.timer.ReadyTimer;
 import com.innovator.alkorea.library.views.GameFinishView;
 
 import java.util.ArrayList;
@@ -57,7 +58,8 @@ public class TapGameActivity extends GameActivity {
   });
 
   @Override
-  public void showGameResult(HashMap<String, Player> playerList, HashMap<String, Integer> resultList) {
+  public void showGameResult(String masterUid, HashMap<String, Player> playerList, HashMap<String, Integer> resultList) {
+    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     Map<String, Integer> descResultList = OtherUtils.sortByComparator(resultList, false);
     final List<Result> results = new ArrayList<>();
     int rank = 1;
@@ -69,6 +71,9 @@ public class TapGameActivity extends GameActivity {
       results.add(result);
       rank++;
     }
+    results.get(results.size()-1).setRank("벌칙");
+    if (!uid.equals(masterUid))
+      gameFinishView.enableExitButton(false);
     gameFinishView.setResultList(results);
     rootLayout.removeView(tapGameView);
     if(gameFinishView.getParent()!=null)
@@ -100,8 +105,8 @@ public class TapGameActivity extends GameActivity {
 
   @Override
   public void goRoom() {
-    String roomId = OtherUtils.getSharedPreferencesStringData(getBaseContext(), "roomId", "");
-    if (!roomId.isEmpty())
+    String roomId = OtherUtils.getSharedPreferencesStringData(getBaseContext(), "roomId", null);
+    if (roomId != null)
       FirebaseUtils.updateTargetRoomGame(roomId, Room.GAME.NOT);
   }
 }

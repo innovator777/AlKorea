@@ -1,4 +1,4 @@
-package com.innovator.alkorea.game;
+package com.innovator.alkorea.views.game;
 
 import android.content.Context;
 import android.graphics.Color;

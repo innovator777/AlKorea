@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class Room implements Parcelable {
 
   public enum STATE {
-    ROOM, GAME, FINISH
+    ROOM, READY, GAME, FINISH
   }
 
   public enum GAME {
@@ -66,8 +66,6 @@ public class Room implements Parcelable {
     this.game = GAME.values()[game];
     this.playerList = parcel.readHashMap(Player.class.getClassLoader());
     this.playerState = parcel.readHashMap(STATE.class.getClassLoader());
-//    int state = parcel.readInt();
-//    this.state = STATE.values()[state];
   }
 
   public HashMap<String, Object> toMap() {
@@ -132,7 +130,6 @@ public class Room implements Parcelable {
   @Override
   public void writeToParcel(Parcel parcel, int i) {
     parcel.writeString(masterUID);
-//    parcel.writeInt(state.ordinal());
     parcel.writeInt(game.ordinal());
     parcel.writeMap(playerList);
     parcel.writeMap(playerState);

@@ -1,4 +1,4 @@
-package com.innovator.alkorea;
+package com.innovator.alkorea.manager;
 
 import android.content.Context;
 import android.util.Log;
@@ -24,7 +24,7 @@ public class GameManager {
   private GameEventListener eventListener;
 
   public interface GameEventListener {
-    void showGameResult(HashMap<String, Player> playerList, HashMap<String, Integer> resultList);
+    void showGameResult(String masterUid, HashMap<String, Player> playerList, HashMap<String, Integer> resultList);
     void endGame();
   }
 
@@ -34,8 +34,8 @@ public class GameManager {
 
   public GameManager(Context context, GameEventListener eventListener) {
     this.context = context;
-    String roomId = OtherUtils.getSharedPreferencesStringData(context, "roomId", "");
-    if (!roomId.isEmpty()) {
+    String roomId = OtherUtils.getSharedPreferencesStringData(context, "roomId", null);
+    if (roomId != null) {
       databaseReference = FirebaseUtils.getDBTargetRoomIDReference(roomId);
       valueEventListener = FirebaseUtils.getDBTargetRoomDataWithListener(roomId, databaseReference, gameCallback);
     }
@@ -53,7 +53,10 @@ public class GameManager {
               return;
             }
           }
-          eventListener.showGameResult(room.getPlayerList(), room.getPlayerScore());
+          for (String key : room.getPlayerList().keySet()) {
+            room.getPlayerList().get(key).setUid(key);
+          }
+          eventListener.showGameResult(room.getMasterUID(), room.getPlayerList(), room.getPlayerScore());
         }
         else {
           eventListener.endGame();

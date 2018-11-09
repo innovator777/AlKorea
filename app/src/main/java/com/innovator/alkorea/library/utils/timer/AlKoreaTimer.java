@@ -1,7 +1,6 @@
-package com.innovator.alkorea.library.utils;
+package com.innovator.alkorea.library.utils.timer;
 
 import android.os.Handler;
-import android.util.Log;
 
 abstract public class AlKoreaTimer {
 

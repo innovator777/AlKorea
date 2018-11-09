@@ -179,8 +179,12 @@ public class GameFinishView extends RelativeLayout {
     gameResultAdapter.notifyDataSetChanged();
   }
 
-//  public Button getExitButton() {
-//    return exitButton;
-//  }
-
+  public void enableExitButton(boolean enable) {
+    if (enable) {
+      exitButton.setVisibility(View.VISIBLE);
+    }
+    else {
+      exitButton.setVisibility(View.INVISIBLE);
+    }
+  }
 }

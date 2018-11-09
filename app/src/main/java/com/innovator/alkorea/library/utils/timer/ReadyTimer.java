@@ -1,8 +1,7 @@
-package com.innovator.alkorea.library.utils;
+package com.innovator.alkorea.library.utils.timer;
 
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 public class ReadyTimer extends AlKoreaTimer {
 

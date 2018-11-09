@@ -4,18 +4,24 @@ import java.util.HashMap;
 
 public class Player {
 
+  private String uid;
   private String name;
   private int sex;
-  private int number;
 
   public Player() {
 
   }
 
   public Player(Player player){
+    this.uid = player.getUid();
     this.name = player.getName();
     this.sex = player.getSex();
-    this.number = player.getNumber();
+  }
+
+  public Player(String uid, String name, int sex) {
+    this.uid = uid;
+    this.name = name;
+    this.sex = sex;
   }
 
   public Player(String name, int sex) {
@@ -23,17 +29,10 @@ public class Player {
     this.sex = sex;
   }
 
-  public Player(String name, int sex, int number) {
-    this.name = name;
-    this.sex = sex;
-    this.number = number;
-  }
-
   public HashMap<String, Object> toMap() {
     HashMap<String, Object> result = new HashMap<>();
     result.put("name", name);
     result.put("sex", sex);
-    result.put("number", number);
     return result;
   }
 
@@ -53,11 +52,11 @@ public class Player {
     this.sex = sex;
   }
 
-  public int getNumber() {
-    return number;
+  public String getUid() {
+    return uid;
   }
 
-  public void setNumber(int number) {
-    this.number = number;
+  public void setUid(String uid) {
+    this.uid = uid;
   }
 }

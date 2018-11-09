@@ -1,4 +1,4 @@
-package com.innovator.alkorea;
+package com.innovator.alkorea.manager;
 
 import android.content.Context;
 import android.util.Log;
@@ -29,20 +29,21 @@ public class RoomManager {
 
   private Room roomInfo;
   private String masterName;
+  private String masterUid;
   private int playerCount;
   private List<Player> playerList;
 
 
   public interface RoomEventListener {
-    void updateRoomData(String masterName, int playerCount, List<Player> playerList);
+    void updateRoomData(String masterUid, String masterName, int playerCount, List<Player> playerList);
     void startGame(Room.GAME game);
     void exitRoom();
   }
 
   public RoomManager(Context context, RoomEventListener roomEventListener) {
     this.context = context;
-    String roomId = OtherUtils.getSharedPreferencesStringData(context, "roomId", "");
-    if (!roomId.isEmpty()) {
+    String roomId = OtherUtils.getSharedPreferencesStringData(context, "roomId", null);
+    if (roomId != null) {
       roomDatabaseReference = FirebaseUtils.getDBTargetRoomIDReference(roomId);
       roomValueEventListener = FirebaseUtils.getDBTargetRoomDataWithListener(roomId, roomDatabaseReference, roomCallback);
     }
@@ -57,7 +58,7 @@ public class RoomManager {
           getRoomData(room);
 
         if (!checkPlayerState(room.getPlayerState()))
-          checkGame(room.getGame());
+          readyGame(room.getGame());
 
         roomInfo = room;
       }
@@ -77,20 +78,21 @@ public class RoomManager {
     List<Player> list = new ArrayList<>();
     for (Iterator<String> it = room.getPlayerList().keySet().iterator(); it.hasNext(); ) {
       String key = it.next();
-      list.add(room.getPlayerList().get(key));
-      if (key.equals(room.getMasterUID())) {
-        masterName = room.getPlayerList().get(key).getName();
-      }
+      Player player = new Player(room.getPlayerList().get(key));
+      player.setUid(key);
+      list.add(player);
     }
+    masterName = room.getPlayerList().get(room.getMasterUID()).getName();
+    masterUid = room.getMasterUID();
     playerList = new ArrayList<>(list);
     playerCount = playerList.size();
-    roomEventListener.updateRoomData(masterName, playerCount, playerList);
+    roomEventListener.updateRoomData(masterUid, masterName, playerCount, playerList);
   }
 
   public void removeRoomManager() {
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    String roomId = OtherUtils.getSharedPreferencesStringData(context, "roomId", "");
-    if(!roomId.isEmpty()) {
+    String roomId = OtherUtils.getSharedPreferencesStringData(context, "roomId", null);
+    if(roomId != null) {
       if (uid.equals(roomInfo.getMasterUID())) {
         FirebaseUtils.removeTargetRoom(roomId);
       } else {
@@ -107,10 +109,10 @@ public class RoomManager {
   }
 
 
-  private void checkGame(Room.GAME game) {
+  private void readyGame(Room.GAME game) {
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    String roomId = OtherUtils.getSharedPreferencesStringData(context, "roomId", "");
-    if (!roomId.isEmpty()) {
+    String roomId = OtherUtils.getSharedPreferencesStringData(context, "roomId", null);
+    if (roomId != null) {
       if (Room.GAME.NOT != game) {
         FirebaseUtils.updateTargetRoomPlayerState(roomId, uid, Room.STATE.GAME);
         roomEventListener.startGame(game);

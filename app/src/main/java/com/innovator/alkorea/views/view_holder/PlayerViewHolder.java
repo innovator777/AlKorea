@@ -2,34 +2,36 @@ package com.innovator.alkorea.views.view_holder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.innovator.alkorea.R;
 
-public class TestPlayerViewHolder extends RecyclerView.ViewHolder {
+public class PlayerViewHolder extends RecyclerView.ViewHolder {
 
-  private TextView numberTextView;
+  private LinearLayout background;
   private TextView nameTextView;
-  private TextView sexTextView;
+  private ImageView sexImageView;
 
-  public TestPlayerViewHolder(View itemView) {
+  public PlayerViewHolder(View itemView) {
     super(itemView);
 
-    numberTextView = itemView.findViewById(R.id.player_recycler_item_number_textView);
-    nameTextView = itemView.findViewById(R.id.player_recycler_item_name_textView);
-    sexTextView = itemView.findViewById(R.id.player_recycler_item_sex_textView);
+    background = itemView.findViewById(R.id.player_background_view);
+    nameTextView = itemView.findViewById(R.id.player_recycler_item_name_textview);
+    sexImageView = itemView.findViewById(R.id.player_recycler_item_sex_imageview);
   }
 
-  public TextView getNumberTextView() {
-    return numberTextView;
+  public LinearLayout getBackground() {
+    return background;
   }
 
   public TextView getNameTextView() {
     return nameTextView;
   }
 
-  public TextView getSexTextView() {
-    return sexTextView;
+  public ImageView getSexImageView() {
+    return sexImageView;
   }
 
 }
