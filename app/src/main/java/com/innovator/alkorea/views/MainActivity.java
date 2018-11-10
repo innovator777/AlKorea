@@ -49,6 +49,13 @@ public class MainActivity extends Activity {
       }
     });
 
+    findViewById(R.id.info_button).setOnClickListener(new Button.OnClickListener() {
+      public void onClick(View v) {
+        Intent intent_info = new Intent(getApplicationContext(), TabMainActivity.class);
+        startActivity(intent_info);
+      }
+    });
+
     findViewById(R.id.setting_button).setOnClickListener(new Button.OnClickListener() {
       public void onClick(View v) {
         Intent intent_setting = new Intent(getApplicationContext(), SettingActivity.class);

@@ -27,6 +27,12 @@
             android:name=".views.RoomActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".views.TabMainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.DetailsInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".views.SettingActivity"
             android:screenOrientation="portrait">
             <intent-filter>

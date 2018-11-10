@@ -23,8 +23,8 @@ public class GameAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
   private GameStartListener gameStartListener;
 
-  private List<GameItem> gameList = Arrays.asList(new GameItem[]{new GameItem(R.drawable.ic_launcher_background, "순서대로", Room.GAME.SEQUENCE),
-                                                        new GameItem(R.drawable.ic_launcher_background, "탭탭", Room.GAME.TAP)});
+  private List<GameItem> gameList = Arrays.asList(new GameItem[]{new GameItem(R.drawable.sequencce, "순서대로", Room.GAME.SEQUENCE),
+                                                        new GameItem(R.drawable.tap, "탭탭", Room.GAME.TAP)});
   private boolean master = false;
 
   public GameAdapter(GameStartListener gameStartListener) {

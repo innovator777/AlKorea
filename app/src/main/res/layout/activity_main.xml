@@ -8,30 +8,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_weight="2">
-
-        <ImageView
-            android:id="@+id/main_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingTop="20dp"
-            android:src="@drawable/main" />
+        android:layout_weight="3">
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="70dp"
             android:text="AlKorea"
             android:textColor="#000000"
-            android:textSize="40dp" />
+            android:textSize="70dp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="3"
+        android:layout_weight="2"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -39,11 +32,17 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <Button
+            <ImageView
                 android:id="@+id/info_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="한국 술 문화" />
+                android:background="@drawable/main2"
+                android:scaleType="fitXY"
+                android:text="한국 술 문화 정보"
+                android:textSize="25sp"
+                android:textColor="#000000"
+                android:textAlignment="center"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -57,12 +56,13 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-                <Button
+                <ImageView
                     android:id="@+id/make_room_button"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
-                    android:text="방 만들기" />
+                    android:src="@drawable/make"
+                    android:scaleType="centerInside"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -70,12 +70,15 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-                <Button
+                <ImageView
                     android:id="@+id/search_room_button"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="방 찾기" />
+                    android:src="@drawable/search"
+                    android:scaleType="centerInside"
+
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -83,13 +86,14 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-                <Button
+                <ImageView
                     android:id="@+id/setting_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="설정" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/setting"
+                    android:scaleType="centerInside"
+                    />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

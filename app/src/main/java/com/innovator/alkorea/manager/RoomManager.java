@@ -32,6 +32,7 @@ public class RoomManager {
   private String masterUid;
   private int playerCount;
   private List<Player> playerList;
+  private String myUid;
 
 
   public interface RoomEventListener {
@@ -48,6 +49,7 @@ public class RoomManager {
       roomValueEventListener = FirebaseUtils.getDBTargetRoomDataWithListener(roomId, roomDatabaseReference, roomCallback);
     }
     this.roomEventListener = roomEventListener;
+    this.myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
   }
 
   FirebaseUtils.RoomCallback roomCallback = new FirebaseUtils.RoomCallback() {
@@ -57,8 +59,17 @@ public class RoomManager {
         if (roomInfo == null || !roomInfo.isEqualsRoomBasicData(room))
           getRoomData(room);
 
-        if (!checkPlayerState(room.getPlayerState()))
-          readyGame(room.getGame());
+
+        if(checkRoomAllPlayer(room.getPlayerState()))
+          readyGame(room.getGame(), room.getPlayerState());
+
+        if(checkReadyAllPlayer(room.getPlayerState())) {
+          String roomId = OtherUtils.getSharedPreferencesStringData(context, "roomId", null);
+          if (roomId != null) {
+            FirebaseUtils.updateTargetRoomPlayerState(roomId, myUid, Room.STATE.GAME);
+            roomEventListener.startGame(room.getGame());
+          }
+        }
 
         roomInfo = room;
       }
@@ -93,9 +104,14 @@ public class RoomManager {
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     String roomId = OtherUtils.getSharedPreferencesStringData(context, "roomId", null);
     if(roomId != null) {
-      if (uid.equals(roomInfo.getMasterUID())) {
-        FirebaseUtils.removeTargetRoom(roomId);
-      } else {
+      if (roomInfo != null) {
+        if (uid.equals(roomInfo.getMasterUID())) {
+          FirebaseUtils.removeTargetRoom(roomId);
+        } else {
+          FirebaseUtils.exitTargetRoom(roomId, uid);
+        }
+      }
+      else {
         FirebaseUtils.exitTargetRoom(roomId, uid);
       }
       OtherUtils.removeSharedPreferenceData(context, "roomId");
@@ -109,25 +125,58 @@ public class RoomManager {
   }
 
 
-  private void readyGame(Room.GAME game) {
+  private void readyGame(Room.GAME game, HashMap<String, Room.STATE> playerState) {
     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     String roomId = OtherUtils.getSharedPreferencesStringData(context, "roomId", null);
     if (roomId != null) {
-      if (Room.GAME.NOT != game) {
-        FirebaseUtils.updateTargetRoomPlayerState(roomId, uid, Room.STATE.GAME);
-        roomEventListener.startGame(game);
+      if (playerState != null) {
+        if (Room.GAME.NOT != game) {
+          if (checkPlayerSelfState(playerState)) {
+            FirebaseUtils.updateTargetRoomPlayerState(roomId, uid, Room.STATE.READY);
+          }
+        }
       }
     }
   }
 
-  // 삳태가 없거나 ROOM일때 False 반환 => 방에 입장 후 첫게임을 하기 전이거나 게임 종료 후 방으로 나온 경우
-  // 상태가 GAME 이거나 FINISH 이면 TRUE 반환 => 게임 중이거나 결과 화면
-  private boolean checkPlayerState(HashMap<String, Room.STATE> playerState) {
-    if (playerState != null) {
-      String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-      return (playerState.get(uid) == Room.STATE.GAME || playerState.get(uid) == Room.STATE.FINISH);
+
+  private boolean checkPlayingGame(HashMap<String, Room.STATE> playerState) {
+    for (Room.STATE state : playerState.values()) {
+      if (state != Room.STATE.GAME || state == Room.STATE.FINISH) {
+        return true;
+      }
     }
     return false;
+  }
+
+  private boolean checkReadyAllPlayer(HashMap<String, Room.STATE> playerState) {
+    for (Room.STATE state : playerState.values()) {
+      if (state != Room.STATE.READY) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean checkRoomAllPlayer(HashMap<String, Room.STATE> playerState) {
+    for (Room.STATE state : playerState.values()) {
+      if (state != Room.STATE.ROOM) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // ROOM일때 False 반환 => 방에 입장 후거나 게임 종료 후 방으로 나온 경우
+  // 상태가 GAME 이거나 FINISH 이면 TRUE 반환 => 게임 중이거나 결과 화면
+  private boolean checkPlayerSelfState(HashMap<String, Room.STATE> playerState) {
+      String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+      if (playerState.get(uid) == Room.STATE.READY ||
+          playerState.get(uid) == Room.STATE.GAME ||
+          playerState.get(uid) == Room.STATE.FINISH) {
+        return false;
+      }
+    return true;
   }
 
   public DatabaseReference getRoomDatabaseReference() {

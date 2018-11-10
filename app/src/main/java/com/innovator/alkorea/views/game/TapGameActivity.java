@@ -65,9 +65,12 @@ public class TapGameActivity extends GameActivity {
     int rank = 1;
     for (String key : descResultList.keySet()) {
       Result result = new Result();
-      result.setRank(String.valueOf(rank));
       result.setPlayerInfo(playerList.get(key));
-      result.setResult(String.valueOf(resultList.get(key)));
+      if (resultList.get(key) == 0)
+        result.setRank("벌칙");
+      else
+        result.setRank(String.valueOf(rank) + "등");
+      result.setResult(String.valueOf(resultList.get(key)) + "개");
       results.add(result);
       rank++;
     }

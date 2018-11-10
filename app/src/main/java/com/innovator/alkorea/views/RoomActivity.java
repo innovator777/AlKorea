@@ -103,6 +103,7 @@ public class RoomActivity extends Activity implements RoomManager.RoomEventListe
       roomManager.removeDatabaseReferenceEventListener();
     }
     roomManager = new RoomManager(getBaseContext(), this);
+    FirebaseUtils.updateTargetRoomPlayerState(getRoomId(), uid, Room.STATE.ROOM);
   }
 
   @Override

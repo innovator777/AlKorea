@@ -77,7 +77,7 @@ public class SequenceGameActivity extends GameActivity implements AlKoreaTimerCa
         result.setResult("3out");
       }
       else {
-        result.setResult(OtherUtils.convertDateFormat(value));
+        result.setResult(OtherUtils.convertDateFormat(value) + "s");
         result.setRank(String.valueOf(rank));
         rank++;
       }

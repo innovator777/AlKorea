@@ -88,7 +88,6 @@ abstract public class GameActivity extends Activity implements GameManager.GameE
 
   @Override
   public void endGame() {
-    updateTargetPlayerState(Room.STATE.ROOM);
     finish();
   }
 
