@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.innovator.alkorea.R;
-import com.innovator.alkorea.library.models.GameItem;
-import com.innovator.alkorea.library.models.Room;
+import com.innovator.alkorea.models.GameItem;
+import com.innovator.alkorea.models.Room;
 import com.innovator.alkorea.views.view_holder.GameViewHolder;
 
 import java.util.Arrays;

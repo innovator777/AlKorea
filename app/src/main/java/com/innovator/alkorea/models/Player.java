@@ -1,4 +1,4 @@
-package com.innovator.alkorea.library.models;
+package com.innovator.alkorea.models;
 
 import java.util.HashMap;
 

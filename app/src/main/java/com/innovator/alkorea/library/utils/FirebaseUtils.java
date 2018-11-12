@@ -1,15 +1,14 @@
 package com.innovator.alkorea.library.utils;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.innovator.alkorea.library.models.Player;
-import com.innovator.alkorea.library.models.Room;
+import com.innovator.alkorea.models.Player;
+import com.innovator.alkorea.models.Room;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.innovator.alkorea.library.adapter.GameResultAdapter;
-import com.innovator.alkorea.library.models.Result;
+import com.innovator.alkorea.models.Result;
 import com.innovator.alkorea.library.utils.OtherUtils;
 
 import java.util.List;

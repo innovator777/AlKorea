@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.innovator.alkorea.R;
-import com.innovator.alkorea.library.models.Info;
+import com.innovator.alkorea.models.Info;
 import com.innovator.alkorea.views.DetailsInfoActivity;
 
 import java.util.ArrayList;

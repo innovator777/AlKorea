@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.innovator.alkorea.manager.GameManager;
-import com.innovator.alkorea.library.models.Room;
+import com.innovator.alkorea.models.Room;
 import com.innovator.alkorea.library.utils.timer.AlKoreaTimerCallbackListener;
 import com.innovator.alkorea.library.utils.FirebaseUtils;
 import com.innovator.alkorea.library.utils.timer.GameTimer;

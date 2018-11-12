@@ -7,9 +7,9 @@ import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.innovator.alkorea.library.models.Player;
-import com.innovator.alkorea.library.models.Result;
-import com.innovator.alkorea.library.models.Room;
+import com.innovator.alkorea.models.Player;
+import com.innovator.alkorea.models.Result;
+import com.innovator.alkorea.models.Room;
 import com.innovator.alkorea.library.utils.FirebaseUtils;
 import com.innovator.alkorea.library.utils.timer.GameTimer;
 import com.innovator.alkorea.library.utils.OtherUtils;

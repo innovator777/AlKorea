@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.innovator.alkorea.R;
-import com.innovator.alkorea.library.models.Info;
+import com.innovator.alkorea.models.Info;
 import com.innovator.alkorea.views.adapter.InfoAdapter;
 
 import java.util.ArrayList;

@@ -4,13 +4,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.innovator.alkorea.library.models.Player;
-import com.innovator.alkorea.library.models.Result;
-import com.innovator.alkorea.library.models.Room;
+import com.innovator.alkorea.models.Player;
+import com.innovator.alkorea.models.Result;
+import com.innovator.alkorea.models.Room;
 import com.innovator.alkorea.library.utils.timer.AlKoreaTimerCallbackListener;
 import com.innovator.alkorea.library.utils.FirebaseUtils;
 import com.innovator.alkorea.library.utils.timer.GameTimer;

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.innovator.alkorea.R;
 import com.innovator.alkorea.library.holder.GameResultViewHolder;
-import com.innovator.alkorea.library.models.Result;
+import com.innovator.alkorea.models.Result;
 
 import java.util.List;
 

@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.innovator.alkorea.R;
-import com.innovator.alkorea.library.models.Player;
-import com.innovator.alkorea.library.models.Room;
+import com.innovator.alkorea.models.Player;
+import com.innovator.alkorea.models.Room;
 import com.innovator.alkorea.library.utils.FirebaseUtils;
 import com.innovator.alkorea.library.utils.OtherUtils;
 import com.innovator.alkorea.library.utils.QRCodeUtils;
